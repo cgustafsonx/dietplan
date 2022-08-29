@@ -1,76 +1,133 @@
 const readlineSync = require("readline-sync");
-const calculations = require("./calculations");
-const activities = require("./activities");
-const categories = require("./categories");
 
-let userAge = readlineSync.question("What is your age? ");
-console.log("Your age is ", userAge);
+function getActivityInput() {
+  const userActivityOptions = [
+    "Sedentary",
+    "Moderately Active",
+    "Active",
+    "Very Active",
+  ];
 
-(userGender = ["Male", "Female", "Don't want to say"]),
-  (index = readlineSync.keyInSelect(userGender, "What is your gender?"));
-console.log("Your gender is: " + userGender[index]);
+  const activityChoice = readlineSync.keyInSelect(
+    userActivityOptions,
+    "What is your activity level?"
+  );
 
-const userActivity = activities.getActivityInput();
-console.log("Your activity is: ", userActivity);
+  const userActivity = userActivityOptions[activityChoice];
+  return userActivity;
+}
 
-const weightInKg = calculations.getWeightInput();
-console.log("Your weight is: ", weightInKg);
+function getTotalCalories(userActivity, bmr) {
+  let totalCalories;
+  if (userActivity == "Sedentary") {
+    totalCalories = bmr + 100;
+    console.log(bmr);
+  } else if (userActivity == "Moderately Active") {
+    totalCalories = bmr + 300;
+    console.log("Check", userActivity);
+  } else if (userActivity == "Active") {
+    totalCalories = bmr + 500;
+    console.log("Check", userActivity);
+  } else if (("Check", userActivity == "Very Active")) {
+    totalCalories = bmr + 700;
+  }
 
-const heightInM = calculations.getHeigthInput();
-console.log("Your height is: ", heightInM);
+  return totalCalories;
+}
 
-const heightInCm = calculations.convertToCm();
-console.log("Your heigth is: ", heightInM);
-
-const bmr = calculations.calculateBmr(weightInKg, heightInCm, userAge);
-console.log("Your BMR is: ", bmr);
-
-const totalCalories = activities.getTotalCalories(
-  userActivity,
-  bmr,
-  totalCalories
-);
-console.log("Your total of calories is:", totalCalories);
-
-console.log(`
-      ~~~~ Overview ~~~~
-      Your BMR: ${bmr}
-      Your active state: ${userActivity}
-      Your total calories: ${totalCalories}
-    ~~~~ Overview ~~~~
-    `);
-
-function suggestedIntakeInput() {
+function suggestedIntakeInput(totalCalories) {
   const suggestedIntake = totalCalories - 500;
-  console.log("Intake:", suggestedIntake);
   return suggestedIntake;
 }
 
-const suggestedIntake = suggestedIntakeInput();
-console.log(suggestedIntake);
+function selectCategory(bmi) {
+  if (bmi < 16) {
+    category = "Severly Underweight";
+  } else if (bmi >= 16 && bmi <= 18.4) {
+    category = "Underweight";
+  } else if (bmi >= 18.5 && bmi <= 24.9) {
+    category = "Normal";
+  } else if (bmi >= 25 && bmi <= 29.9) {
+    category = "Overweight";
+  } else {
+    category = "Obese";
+  }
 
-function calculateNewWeightFiveWeeks() {
-  const totalWeightFiveWeeks = weightInKg - 2.5;
-  console.log("Result:", totalWeightFiveWeeks);
-  return totalWeightFiveWeeks;
+  return category;
 }
 
-function calculateNewWeightTenWeeks() {
-  const totalWeightTenWeeks = weightInKg - 5;
-  console.log("Result:", totalWeightTenWeeks);
-  return totalWeightTenWeeks;
+function calculateBmr(weightInKg, heightInCm, userAge) {
+  let bmr = 10 * weightInKg + 6.25 * heightInCm + 5 * userAge + 5;
+  return bmr;
 }
 
-function calculateNewWeightFifteenWeeks() {
-  const totalWeightFifteenWeeks = weightInKg - 7.5;
-  return totalWeightFifteenWeeks;
+function getWeightInput() {
+  let weightInKg = readlineSync.questionInt("What is your weight? ");
+  return weightInKg;
 }
 
-const bmi = calculations.calculateBmi();
-console.log("Your BMI is", bmi.toFixed(2));
+function getHeigthInput() {
+  let heightInM = readlineSync.questionFloat("What is your height? ");
+  return heightInM;
+}
 
-const category = categories.selectCategory();
-console.log("Your weight category is", category);
+function convertToCm(heightInM) {
+  const heightInCm = heightInM * 100;
+  return heightInCm;
+}
 
-const resultGoalsEnd = categories.resultGoals();
-console.log("Your final results: ", resultGoalsEnd);
+function calculateBmi(weightInKg, heightInM, heightInM) {
+  let bmi = weightInKg / (heightInM * heightInM);
+  return bmi;
+}
+
+function calculateGoalWeight(heightInM) {
+  const goalWeight = 24.9 * (heightInM * heightInM);
+  return goalWeight;
+}
+
+function calculateWeightToLose(weightInKg, goalWeight) {
+  const weightToLose = weightInKg - goalWeight;
+  return weightToLose;
+}
+
+function calculateNewWeight(currentWeight, weeks) {
+  const weightInNextPeriod = currentWeight - weeks * 0.5;
+  return weightInNextPeriod;
+}
+
+function displayDietPlan(
+  weightToLose,
+  goalWeight,
+  suggestedIntake,
+  weightAfter5Weeks,
+  weightAfter10Weeks,
+  weightAfter15Weeks
+) {
+  console.log(
+    "You need to lose: ",
+    weightToLose.toFixed(2),
+    "to reach your goal weight of",
+    goalWeight.toFixed(2)
+  );
+  console.log("If you cut your calories by 500 to", suggestedIntake);
+  console.log("After 5 weeks you should be: ", weightAfter5Weeks);
+  console.log("After 10 weeks you should be: ", weightAfter10Weeks);
+  console.log("After 15 weeks you should be: ", weightAfter15Weeks);
+}
+
+module.exports = {
+  getActivityInput: getActivityInput,
+  getTotalCalories: getTotalCalories,
+  suggestedIntakeInput: suggestedIntakeInput,
+  selectCategory: selectCategory,
+  getWeightInput: getWeightInput,
+  getHeigthInput: getHeigthInput,
+  convertToCm: convertToCm,
+  calculateBmr: calculateBmr,
+  calculateBmi: calculateBmi,
+  calculateGoalWeight: calculateGoalWeight,
+  calculateWeightToLose: calculateWeightToLose,
+  calculateNewWeight: calculateNewWeight,
+  displayDietPlan: displayDietPlan,
+};
