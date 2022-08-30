@@ -9,8 +9,7 @@ const userActivity = functions.getActivityInput();
 const weightInKg = functions.getWeightInput();
 const heightInM = functions.getHeigthInput();
 
-// Output a summary of the user input (maybe create a function for this)
-// displayInputSummary(userAge, userGender, userActivity, weightInKg, heightInM)
+// Output a summary of the user input
 console.log("Your age is ", userAge);
 console.log("Your chosen gender is: " + userGender[index]);
 console.log("Your chosen activity level is: ", userActivity);
@@ -25,8 +24,7 @@ const suggestedIntake = functions.suggestedIntakeInput(totalCalories);
 const bmi = functions.calculateBmi(weightInKg, heightInM, heightInM);
 const category = functions.selectCategory(bmi);
 
-// Output the calculated stats (maybe create a function for this)
-// displayCalculatedStat(bmi, bmr, totalCalories, category)
+// Output the calculated stats
 console.log("Your current BMI: ", bmi.toFixed(2));
 console.log("Your BMR is: ", bmr);
 console.log("Your total of calories: ", totalCalories);
@@ -49,16 +47,3 @@ if (bmi >= 25) {
     weightAfter15Weeks
   );
 }
-
-// Calculate for a dietplan
-
-// 1. Verplaats de functie naar een ander bestand
-// 2. exporteer de functie! (module.exports)
-// 3. importeer de functie in je main bestand met require (functions.js in dit geval)
-// 4. gebruik je functie in het main bestand calculateBmr() -> calculations.calculateBmr();
-// 5. Voeg parameters toe aan de functie
-// - Van function calculateBmr(){}
-// - Naar function calculateBmr(weightInKg, heightInCm, userAge){}
-// 6. Geef de juiste argument mee wanneer je de functie aanroept
-// - in de juiste volgorde!
-// - calculations.calculateBmr(weightInKg, heightInCm, userAge);
