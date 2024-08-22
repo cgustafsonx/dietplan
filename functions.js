@@ -13,6 +13,11 @@ function getActivityInput() {
     "What is your activity level?"
   );
 
+  if (activityChoice === -1) {
+    console.log("No selection made, exiting.");
+    return null; // handle case where user cancels the selection
+  }
+
   const userActivity = userActivityOptions[activityChoice];
   return userActivity;
 }
@@ -21,14 +26,11 @@ function getTotalCalories(userActivity, bmr) {
   let totalCalories;
   if (userActivity == "Sedentary") {
     totalCalories = bmr + 100;
-    console.log(bmr);
   } else if (userActivity == "Moderately Active") {
     totalCalories = bmr + 300;
-    console.log("Check", userActivity);
   } else if (userActivity == "Active") {
     totalCalories = bmr + 500;
-    console.log("Check", userActivity);
-  } else if (("Check", userActivity == "Very Active")) {
+  } else if (userActivity == "Very Active") {
     totalCalories = bmr + 700;
   }
 
@@ -41,8 +43,9 @@ function suggestedIntakeInput(totalCalories) {
 }
 
 function selectCategory(bmi) {
+  let category;
   if (bmi < 16) {
-    category = "Severly Underweight";
+    category = "Severely Underweight";
   } else if (bmi >= 16 && bmi <= 18.4) {
     category = "Underweight";
   } else if (bmi >= 18.5 && bmi <= 24.9) {
@@ -66,7 +69,7 @@ function getWeightInput() {
   return weightInKg;
 }
 
-function getHeigthInput() {
+function getHeightInput() {
   let heightInM = readlineSync.questionFloat("What is your height? ");
   return heightInM;
 }
@@ -76,7 +79,7 @@ function convertToCm(heightInM) {
   return heightInCm;
 }
 
-function calculateBmi(weightInKg, heightInM, heightInM) {
+function calculateBmi(weightInKg, heightInM) {
   let bmi = weightInKg / (heightInM * heightInM);
   return bmi;
 }
@@ -111,9 +114,9 @@ function displayDietPlan(
     goalWeight.toFixed(2)
   );
   console.log("If you cut your calories by 500 to", suggestedIntake);
-  console.log("After 5 weeks you should be: ", weightAfter5Weeks);
-  console.log("After 10 weeks you should be: ", weightAfter10Weeks);
-  console.log("After 15 weeks you should be: ", weightAfter15Weeks);
+  console.log("After 5 weeks you should be: ", weightAfter5Weeks.toFixed(2));
+  console.log("After 10 weeks you should be: ", weightAfter10Weeks.toFixed(2));
+  console.log("After 15 weeks you should be: ", weightAfter15Weeks.toFixed(2));
 }
 
 module.exports = {
@@ -122,7 +125,7 @@ module.exports = {
   suggestedIntakeInput: suggestedIntakeInput,
   selectCategory: selectCategory,
   getWeightInput: getWeightInput,
-  getHeigthInput: getHeigthInput,
+  getHeightInput: getHeightInput,
   convertToCm: convertToCm,
   calculateBmr: calculateBmr,
   calculateBmi: calculateBmi,
